@@ -138,7 +138,6 @@
         kItemshopBuy.func.resetUI()
         ItemNumFrame:Hide()
         this:SetNumber(0)
-        me.func.updateCosts()
       </OnShow>
       <OnClick>
         this:HighlightText()
@@ -151,6 +150,7 @@
 			</OnEscapePressed>
       <OnTextChanged>
         kItemshopBuy.vars.amount = this:GetNumber()
+        kItemshopBuy.func.updateCosts()
 			</OnTextChanged>
     </Scripts>
 	</EditBox>
