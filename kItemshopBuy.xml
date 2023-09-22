@@ -1,0 +1,188 @@
+<Ui xmlns="http://www.runewaker.com/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.runewaker.com/..\..\WorldXML\UI.xsd">
+	<Frame name="kItemshopBuy_Handler" parent="UIParent">
+		<Scripts>
+			<OnUpdate>
+				kItemshopBuy.func.OnUpdate(elapsedTime)
+			</OnUpdate>
+		</Scripts>
+	</Frame>
+
+  <EditBox name="IM2_Amountoverride" parent="IM2_BuyFrame" numeric="true" letters="3" historyLines="0" enableMouse="true">
+    <Size>
+			<AbsDimension x="60" y="18"/>
+		</Size>
+    <Anchors>
+      <Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" relativeTo="IM2_BuyFrame">
+        <Offset>
+          <AbsDimension x="-90" y="80"/>
+        </Offset>
+      </Anchor>
+		</Anchors>
+		<Layers>
+			<Layer>
+				<Texture name="$parentBorderLeft" file="Interface\ChatFrame\ChatEditBox-Border">
+					<Size>
+						<AbsDimension x="16" y="22"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="22" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.25" top="0" bottom="0.6875"/>
+				</Texture>
+				<Texture name="$parentBorderRight" file="Interface\ChatFrame\ChatEditBox-Border">
+					<Size>
+						<AbsDimension x="16" y="22"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPRIGHT"/>
+					</Anchors>
+					<TexCoords left="0.75" right="1" top="0" bottom="0.6875"/>
+				</Texture>
+				<Texture file="Interface\ChatFrame\ChatEditBox-Border">
+					<Size>
+						<AbsDimension x="0" y="22"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentBorderLeft" relativePoint="RIGHT"/>
+						<Anchor point="RIGHT" relativeTo="$parentBorderRight" relativePoint="LEFT"/>
+					</Anchors>
+					<TexCoords left="0.25" right="0.75" top="0" bottom="0.6875"/>
+				</Texture>
+
+        <Texture name="$parent_Diaicon" file="Interface\AddOns\kItemshopBuy\texture\diamond.png" hidden="true">
+          <Size>
+            <AbsDimension x="16" y="16"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parent">
+              <Offset>
+                <AbsDimension x="5" y="1"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+        <Texture name="$parent_Rubyicon" file="Interface\AddOns\kItemshopBuy\texture\ruby.png" hidden="true">
+          <Size>
+            <AbsDimension x="16" y="16"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parent">
+              <Offset>
+                <AbsDimension x="5" y="1"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+        <Texture name="$parent_Ptkicon" file="Interface\AddOns\kItemshopBuy\texture\phirius_token_coin.png" hidden="true">
+          <Size>
+            <AbsDimension x="16" y="16"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parent">
+              <Offset>
+                <AbsDimension x="5" y="1"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+        <FontString name="$parent_Dias" text="0" inherits="GameFontHighlight" justifyH="LEFT" hidden="true">
+          <Anchors>
+            <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parent_Diaicon">
+              <Offset>
+                <AbsDimension x="3" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors> 
+        </FontString>
+        <FontString name="$parent_Rubies" text="0" inherits="GameFontHighlight" justifyH="LEFT" hidden="true">
+          <Anchors>
+            <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parent_Rubyicon">
+              <Offset>
+                <AbsDimension x="3" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors> 
+        </FontString>
+        <FontString name="$parent_Ptk" text="0" inherits="GameFontHighlight" justifyH="LEFT" hidden="true">
+          <Anchors>
+            <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parent_Ptkicon">
+              <Offset>
+                <AbsDimension x="3" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors> 
+        </FontString>
+			</Layer>
+			<Layer level="ARTWORK">
+				<FontString name="$parentHeader" inherits="GameEditFont">
+					<Anchors>
+						<Anchor point="LEFT">
+							<Offset>
+								<AbsDimension x="26" y="-1"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<TextInsets>
+			<AbsInset left="27" right="4" top="5" bottom="0"/>
+		</TextInsets>
+		<FontString inherits="GameEditFont"/>
+    <Scripts>
+      <OnShow>
+        kItemshopBuy.func.resetUI()
+        ItemNumFrame:Hide()
+        this:SetNumber(0)
+        me.func.updateCosts()
+      </OnShow>
+      <OnClick>
+        this:HighlightText()
+      </OnClick>
+      <OnEnterPressed>
+        this:ClearFocus()
+			</OnEnterPressed>
+			<OnEscapePressed>
+        this:ClearFocus()
+			</OnEscapePressed>
+      <OnTextChanged>
+        kItemshopBuy.vars.amount = this:GetNumber()
+			</OnTextChanged>
+    </Scripts>
+	</EditBox>
+
+
+  <Button name="kItemshopBuy_BuyBtn2" inherits="UIPanelButtonTemplate" parent="IM2_BuyFrame" text="Multibuy">
+    <Size>
+      <AbsDimension x="60" y="22"/>
+    </Size>
+    <Anchors>
+      <Anchor point="BOTTOM" relativeTo="$parent">
+        <Offset>
+          <AbsDimension x="-75" y="-11"/>
+        </Offset>
+      </Anchor>
+    </Anchors>
+    <Scripts>
+      <OnShow>
+        IM2_BuyFrameOK:Disable()
+        IM2_BuyFrameOK:Hide()
+        kItemshopBuy.func.updateCosts()
+      </OnShow>
+      <OnClick>
+        kItemshopBuy.vars.buyActive = true
+      </OnClick>
+      <OnEnter>
+        GameTooltip:SetOwner(this, "ANCHOR_LEFT", -5, 0);
+				GameTooltip:SetText("Buy multiple items", 1, 1, 1);
+      </OnEnter>
+      <OnLeave>
+        GameTooltip:Hide()
+      </OnLeave>
+    </Scripts>
+  </Button>
+</Ui>
