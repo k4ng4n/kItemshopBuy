@@ -34,22 +34,26 @@ end
 
 function me.func.buyAmount()
   -- amount == 0 abfangen
-  if (me.vars.amount == 0) then 
+  if (me.vars.amount == 0) then
+    SendSystemChat("Amount to buy is 0")
     me.vars.buyActive = false -- buy stop
 		return;
   end
   -- checks sec password
   if (not CheckPasswordState()) then
+    SendSystemChat("Enter password first then try again")
     me.vars.buyActive = false -- buy stop
 		return;
 	end
   -- wenn Itemshop geschlossen wird dann auch kauf abbrechen
   if (not ItemMallFrame:IsVisible() or not IM2_BuyFrame:IsVisible()) then
+    SendSystemChat("Itemshop Frame is not open")
     me.vars.buyActive = false -- buy stop
 		return;
   end
   -- check free bag slots
   if (not me.func.freeItemShopBagSlots()) then
+    SendSystemChat("No free space in Itemshop-Bag")
     me.vars.buyActive = false -- buy stop
 		return;
   end
@@ -86,15 +90,15 @@ function me.func.buyAmount()
       SendSystemChat(str)
       SendWarningMsg(str)
 		end
-
+    SendSystemChat("Nicht genug Währung")
     me.vars.buyActive = false -- stop
 	end
 end
 
 function me.func.freeItemShopBagSlots()
   for i = 1, 50 do
-    local inventoryIndex, icon, name, itemCount, locked, quality = GetBagItemInfo(i)
-    if (not (name and name ~= "")) then
+    local icon, name, itemCount, locked = GetGoodsItemInfo(i)
+    if (not name or name == "") then
       return true
     end
   end
@@ -103,7 +107,12 @@ end
 
 function me.func.updateCosts()
   local count = me.vars.amount
-  local item = ItemMallFrame.selectItem;
+	local dias = GetPlayerMoney("account"); --dias
+	local rubies = GetPlayerMoney("bonus"); --rubis
+	local ptk = GetPlayerMoney("billdin"); -- phirius marken
+	local item = ItemMallFrame.selectItem;
+
+  -- hide all
   IM2_Amountoverride_Diaicon:Hide()
   IM2_Amountoverride_Rubyicon:Hide()
   IM2_Amountoverride_Ptkicon:Hide()
@@ -112,21 +121,35 @@ function me.func.updateCosts()
   IM2_Amountoverride_Ptk:Hide()
 
   if (item.accountMoney > 0) then
+    IM2_Amountoverride_Dias:SetText(item.accountMoney * count)
+    if (dias > item.accountMoney * count) then
+      IM2_Amountoverride_Dias:SetColor(0,1,0)
+    else
+      IM2_Amountoverride_Dias:SetColor(1,0,0)
+    end
     IM2_Amountoverride_Diaicon:Show()
     IM2_Amountoverride_Dias:Show()
-    IM2_Amountoverride_Dias:SetText(item.accountMoney * count)
-    IM2_Amountoverride_Dias:SetColor(0,0.5,1)
   end
   if (item.bonusMoney > 0) then
+    IM2_Amountoverride_Rubies:SetText(item.bonusMoney * count)
+    if (rubies > item.bonusMoney * count) then
+      IM2_Amountoverride_Rubies:SetColor(0,1,0)
+    else
+      IM2_Amountoverride_Rubies:SetColor(1,0,0)
+    end
     IM2_Amountoverride_Rubyicon:Show()
     IM2_Amountoverride_Rubies:Show()
-    IM2_Amountoverride_Rubies:SetText(item.bonusMoney * count)
-    IM2_Amountoverride_Rubies:SetColor(1,0,0)
+    
   end
   if (item.freeMoney > 0) then
+    IM2_Amountoverride_Ptk:SetText(item.freeMoney * count)
+    if (ptk > item.freeMoney * count) then
+      IM2_Amountoverride_Ptk:SetColor(0,1,0)
+    else
+      IM2_Amountoverride_Ptk:SetColor(1,0,0)
+    end
     IM2_Amountoverride_Ptkicon:Show()
     IM2_Amountoverride_Ptk:Show()
-    IM2_Amountoverride_Ptk:SetText(item.freeMoney * count)
   end
 end
 
