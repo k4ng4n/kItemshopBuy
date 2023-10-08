@@ -135,9 +135,11 @@
 		<FontString inherits="GameEditFont"/>
     <Scripts>
       <OnShow>
-        kItemshopBuy.func.resetUI()
         ItemNumFrame:Hide()
-        this:SetNumber(0)
+
+        this:SetNumber(1)
+        kItemshopBuy.vars.amount = this:GetNumber()
+        kItemshopBuy.func.updateCosts()
       </OnShow>
       <OnClick>
         this:HighlightText()

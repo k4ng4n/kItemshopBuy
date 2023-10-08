@@ -1,14 +1,13 @@
 --[[
-  ItemShopMultiBuy Addon
-  Author: Kangan
-  What is it for: With this addon you can buy up to 999 items at once from the itemshop
+  kItemshopBuy
+  With this addon you can buy up to 999 items at once from the itemshop
 ]]
 
 local me = {
   name = "kItemshopBuy",
+  author = "Kangan",
   vars = {
     elapsed = 0,
-    buySpeed = (GetPing()/1000)+0.05,
     buyActive = false,
     amount = 0,
   },
@@ -17,18 +16,12 @@ local me = {
 
 function me.func.OnUpdate(_elapsed)
   me.vars.elapsed = me.vars.elapsed + _elapsed
-  if (me.vars.elapsed < me.vars.buySpeed) then return; end
+  if ( me.vars.elapsed < (GetPing()/1000) + 0.06 ) then return; end
 
   if (me.vars.buyActive) then
     me.vars.elapsed = 0
     me.func.updateSpeed()
     me.func.buyAmount()
-  end
-end
-
-function me.func.updateSpeed()
-  if ((GetPing()/1000)+0.05 ~= me.vars.buySpeed) then
-    me.vars.buySpeed = (GetPing()/1000)+0.05
   end
 end
 
@@ -151,17 +144,6 @@ function me.func.updateCosts()
     IM2_Amountoverride_Ptkicon:Show()
     IM2_Amountoverride_Ptk:Show()
   end
-end
-
-function me.func.resetUI()
-  me.vars.buyActive = false
-  me.vars.amount = 0
-  IM2_Amountoverride:SetNumber(0)
-  IM2_Amountoverride_Dias:SetText("0")
-  IM2_Amountoverride_Dias:SetColor(1,1,1)
-  IM2_Amountoverride_Rubies:SetText("0")
-  IM2_Amountoverride_Rubies:SetColor(1,1,1)
-  IM2_Amountoverride_Ptk:SetText("0")
 end
 
 _G[me.name] = me
