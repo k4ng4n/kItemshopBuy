@@ -16,11 +16,9 @@ local me = {
 
 function me.func.OnUpdate(_elapsed)
   me.vars.elapsed = me.vars.elapsed + _elapsed
-  if ( me.vars.elapsed < (GetPing()/1000) + 0.06 ) then return; end
-
+  if ( me.vars.elapsed < (GetPing()/2000) + 0.06 + _elapsed*5 ) then return; end
+  me.vars.elapsed = 0
   if (me.vars.buyActive) then
-    me.vars.elapsed = 0
-    me.func.updateSpeed()
     me.func.buyAmount()
   end
 end
@@ -28,13 +26,13 @@ end
 function me.func.buyAmount()
   -- amount == 0 abfangen
   if (me.vars.amount == 0) then
-    SendSystemChat("Amount to buy is 0")
+    SendSystemChat("Amount is 0")
     me.vars.buyActive = false -- buy stop
 		return;
   end
   -- checks sec password
   if (not CheckPasswordState()) then
-    SendSystemChat("Enter password first then try again")
+    SendSystemChat("Enter password then buy again")
     me.vars.buyActive = false -- buy stop
 		return;
 	end
